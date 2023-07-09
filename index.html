@@ -49,7 +49,7 @@
             </div>
         </div>
 
-        <!-- Pequena navbar com filtros -->
+        <!-- Navbar com filtros -->
         <div class="row mb-1">
             <div class="col">
                 <div class="card">
@@ -57,7 +57,7 @@
                         <nav class="navbar">
                             <div class="container-fluid">
                                 <div class="d-flex gap-3">
-                                    <button type="button" class="btn btn-primary">
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newLine" data-bs-whatever="">
                                         Nova linha
                                         <i class="bi bi-file-earmark-plus"></i>
                                     </button>
@@ -85,6 +85,186 @@
                         </nav>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="newLine" tabindex="-1" aria-labelledby="newLineFormLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="newLineFormLabel">Inserir linha na tabela</h1>
+                  <button type="button" class="btn-close bt" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body overflow-y-auto" style="max-height: 400px;">
+                  <form>
+                    <div class="mb-3">
+                      <label for="recipient-name" class="col-form-label">REF_BACEN:</label>
+                      <input type="text" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">NU_ORDEM:</label>
+                        <input type="text" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">DT_EMISSÃO:</label>
+                        <input type="date" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">DT_VENCIMENTO:</label>
+                        <input type="date" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">CD_INST_CREDITO:</label>
+                        <input type="text" class="form-control" id="recipient-name">
+                    </div>  
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">CD_CATEG_EMITENTE:</label>
+                        <input type="text" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">CD_CATEG_RECURSO:</label>
+                        <input type="text" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">CNPJ_AGENTE_INVEST:</label>
+                        <input type="text" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">CD_ESTADO:</label>
+                        <input type="text" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">CD_REF_BACEN_INVESTIMENTO:</label>
+                        <input type="text" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">CD_TIPO_SEGURO:</label>
+                        <input type="text" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">CD_EMPREENDIMENTO:</label>
+                        <input type="text" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">CD_PROGRAMA:</label>
+                        <input type="text" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">CD_TIPO_ENCARG_FINAC:</label>
+                        <input type="text" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">CD_TIPO_IRRIGAÇÃO:</label>
+                        <input type="text" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">CD_TIPO_AGRICULTURA:</label>
+                        <input type="text" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">CD_FASE_CICLO_PRODUÇÃO:</label>
+                        <input type="text" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">CD_TIPO_CULTIVO:</label>
+                        <input type="text" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">CD_TIPO_INTEGR_CONSOR:</label>
+                        <input type="text" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">CD_TIPO_GRÃO_SEMENTE:</label>
+                        <input type="text" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">VL_ALIQ_PROAGRO:</label>
+                        <input type="text" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">VL_JUROS:</label>
+                        <input type="text" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">VL_PRESTAÇÃO_INVESTIMENTO:</label>
+                        <input type="text" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">VL_PREV_PROD:</label>
+                        <input type="text" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">VL_QUANTIDADE:</label>
+                        <input type="text" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">VL_RECEITA_BRUTA_ESPERADA:</label>
+                        <input type="text" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">VL_PARC_CRÉDITO:</label>
+                        <input type="text" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">VL_REC_PROPRIO:</label>
+                        <input type="text" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">VL_PERC_RISCO_STN:</label>
+                        <input type="text" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">VL_PERC_RISCO_FUNDO_CONST:</label>
+                        <input type="text" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">VL_REC_PROPRIO_SRV:</label>
+                        <input type="text" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">VL_AREA_FINANC:</label>
+                        <input type="text" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">CD_SUBPROGRAMA:</label>
+                        <input type="text" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">CD_PRODUTIV_OBTIDA:</label>
+                        <input type="text" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">DT_FIM_COLHEITA:</label>
+                        <input type="date" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">DT_FIM_PLANTIO:</label>
+                        <input type="date" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">DT_INIC_COLHEITA:</label>
+                        <input type="date" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">DT_INIC_PLANTIO:</label>
+                        <input type="date" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">VL_JUROS_ENC_FINAN_PROSFIX:</label>
+                        <input type="text" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">VL_PERC_CUSTO_EFET_TOTAL:</label>
+                        <input type="text" class="form-control" id="recipient-name">
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                  <button type="button" class="btn btn-primary">Criar</button>
+                </div>
+              </div>
             </div>
         </div>
 
@@ -124,10 +304,10 @@
                                 <th scope="col">VL_QUANTIDADE</th>
                                 <th scope="col">VL_RECEITA_BRUTA_ESPERADA</th>
                                 <th scope="col">VL_PARC_CRÉDITO</th>
-                                <th scope="col">VL_REC_PRÓPRIO</th>
+                                <th scope="col">VL_REC_PROPRIO</th>
                                 <th scope="col">VL_PERC_RISCO_STN</th>
                                 <th scope="col">VL_PERC_RISCO_FUNDO_CONST</th>
-                                <th scope="col">VL_REC_PRÓPRIO_SRV</th>
+                                <th scope="col">VL_REC_PROPRIO_SRV</th>
                                 <th scope="col">VL_AREA_FINANC</th>
                                 <th scope="col">CD_SUBPROGRAMA</th>
                                 <th scope="col">CD_PRODUTIV_OBTIDA</th>
