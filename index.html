@@ -44,7 +44,7 @@
             <div class="col">
                 <div class="mb-3 ">
                     <label for="formFile" class="form-label fs-5">Selecione o arquivo desejado.</label>
-                    <input class="form-control" type="file" accept=".txt, .xml" id="formFile">
+                    <input class="form-control" type="file" accept=".txt, .xml" id="formFile" onchange="processFile()">
                 </div>
             </div>
             <div class="col">
@@ -88,55 +88,56 @@
         <!-- Tabela -->
         <div class="row mb-3">
             <div class="col">
-                <div class="card w-100 p-3">
+                <div class="card w-100 p-1 overflow-auto" style="max-height: 500px;">
                     <div class="card-body">
-                        <table class="table">
-                            <thead>
+                        <table class="table table-striped table-bordered">
+                            <thead class="table-success">
                               <tr>
-                                <th scope="col">Id</th>
-                                <th scope="col">First</th>
-                                <th scope="col">Last</th>
-                                <th scope="col">Handle</th>
-                                <th scope="col">Actions</th>
+                                <th scope="col">REF_BACEN</th>
+                                <th scope="col">NU_ORDEM</th>
+                                <th scope="col">CNPJ_IF</th>
+                                <th scope="col">DT_EMISSÃO</th>
+                                <th scope="col">DT_VENCIMENTO</th>
+                                <th scope="col">CD_INST_CREDITO</th>
+                                <th scope="col">CD_CATEG_EMITENTE</th>
+                                <th scope="col">CD_CATEG_RECURSO</th>
+                                <th scope="col">CNPJ_AGENTE_INVEST</th>
+                                <th scope="col">CD_ESTADO</th>
+                                <th scope="col">CD_REF_BACEN_INVESTIMENTO</th>
+                                <th scope="col">CD_TIPO_SEGURO</th>
+                                <th scope="col">CD_EMPREENDIMENTO</th>
+                                <th scope="col">CD_PROGRAMA</th>
+                                <th scope="col">CD_TIPO_ENCARG_FINAC</th>
+                                <th scope="col">CD_TIPO_IRRIGAÇÃO</th>
+                                <th scope="col">CD_TIPO_AGRICULTURA</th>
+                                <th scope="col">CD_FASE_CICLO_PRODUÇÃO</th>
+                                <th scope="col">CD_TIPO_CULTIVO</th>
+                                <th scope="col">CD_TIPO_INTEGR_CONSOR</th>
+                                <th scope="col">CD_TIPO_GRÃO_SEMENTE</th>
+                                <th scope="col">VL_ALIQ_PROAGRO</th>
+                                <th scope="col">VL_JUROS</th>
+                                <th scope="col">VL_PRESTAÇÃO_INVESTIMENTO</th>
+                                <th scope="col">VL_PREV_PROD</th>
+                                <th scope="col">VL_QUANTIDADE</th>
+                                <th scope="col">VL_RECEITA_BRUTA_ESPERADA</th>
+                                <th scope="col">VL_PARC_CRÉDITO</th>
+                                <th scope="col">VL_REC_PRÓPRIO</th>
+                                <th scope="col">VL_PERC_RISCO_STN</th>
+                                <th scope="col">VL_PERC_RISCO_FUNDO_CONST</th>
+                                <th scope="col">VL_REC_PRÓPRIO_SRV</th>
+                                <th scope="col">VL_AREA_FINANC</th>
+                                <th scope="col">CD_SUBPROGRAMA</th>
+                                <th scope="col">CD_PRODUTIV_OBTIDA</th>
+                                <th scope="col">DT_FIM_COLHEITA</th>
+                                <th scope="col">DT_FIM_PLANTIO</th>
+                                <th scope="col">DT_INIC_COLHEITA</th>
+                                <th scope="col">DT_INIC_PLANTIO</th>
+                                <th scope="col">VL_JUROS_ENC_FINAN_PROSFIX</th>
+                                <th scope="col">VL_PERC_CUSTO_EFET_TOTAL</th>
+                                <th scope="col">AÇÕES</th>
                               </tr>
                             </thead>
-                            <tbody>
-                              <tr>
-                                <th scope="row">1</th>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                                <td>
-                                    <div class="btn-group btn-group-sm" role="group" aria-label="Small button group">
-                                        <button type="button" class="btn btn-outline-dark">Editar</button>
-                                        <button type="button" class="btn btn-outline-dark">Apagar</button>
-                                    </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <th scope="row">2</th>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>@fat</td>
-                                <td>
-                                    <div class="btn-group btn-group-sm" role="group" aria-label="Small button group">
-                                        <button type="button" class="btn btn-outline-dark">Editar</button>
-                                        <button type="button" class="btn btn-outline-dark">Apagar</button>
-                                    </div>
-                                </td>
-                              </tr>
-                              <tr>
-                                <th scope="row">3</th>
-                                <td colspan="2">Larry the Bird</td>
-                                <td>@twitter</td>
-                                <td>
-                                    <div class="btn-group btn-group-sm" role="group" aria-label="Small button group">
-                                        <button type="button" class="btn btn-outline-dark">Editar</button>
-                                        <button type="button" class="btn btn-outline-dark">Apagar</button>
-                                    </div>
-                                </td>
-                              </tr>
-                            </tbody>
+                            <tbody id="table_body"></tbody>
                         </table>
                     </div>
                 </div>
@@ -144,7 +145,7 @@
         </div>
 
         <!-- Gráfico -->
-        <div class="row mb-3">
+        <div class="row mb-3 d-none">
             <div class="col">
                 <div class="card w-90 p-3">
                     <div class="card-body">
