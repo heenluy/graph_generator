@@ -1,99 +1,167 @@
-let data = [];
+const storage = [];
+let previusLength = 0;
+let fileArrayLength = 0;
 
-/*
-* Essa função vai "ouvir" o formulário de arquivos.
-* Ainda não possui validação de extenção.
-* Após pegar o arquivo, ela chama a função "fillTable".
+/**
+ * ERROS
+ * 1. Ao inserir novas linhas antes de importar um arquivo,
+ *    quando o arquivo for importado, depois, o tamanho da @constant storage
+ *    ficará diferente do tamanho das linhas da tabela (tr).
+ * 
+ * 2. É semelhante ao primeiro: se um arquivo for importado de forma alternada
+ *    com a inserção de novas linhas na tabela, isso causará uma inconsistência
+ *    no tamanha da @constant storage em relação às linhas renderizadas na tabela. 
 */
+
 function processFile() {
   const fileInput = document.getElementById('formFile');
   const file = fileInput.files[0];
 
   const reader = new FileReader();
+
   reader.onload = function (e) {
     const content = e.target.result;
-    fillTable(content)
+    fileToStringArray(content)
   };
 
   reader.readAsText(file);
 }
 
-/**
- * 
- * @param {string} content
- * 
- * Essa função é responsável por organizar e exibir o conteúdo do arquivo.
- * Ela popula a tabela com o conteúdo do arquivo, que vem com 'string'.
- */
-function fillTable(content) {
-  const lines = content.split('\n')
-
-  lines.forEach(line => {
+function renderTable(finishedCells) {
+  finishedCells.forEach(elements => {
     const tbody = document.getElementById('table_body');
-    const row = document.createElement('tr');
-    row.className = "text-center"
-    const actions = document.createElement('td');
-    const cells = line.split('\r');
+    
+    const tr = document.createElement('tr');
+    tr.classList.add("text-center");
 
-    cells.forEach(el => {
-      let attr = []
-      attr = el.split(";");
+    const actionCell = document.createElement('td');
+    const button1 = document.createElement('button');
+    const button2 = document.createElement('button');
 
-      if(attr.length === 41) {
-        // VALIDAÇÃO -> && attr[2] === ""
-        switch(true) {
-          case attr[3] !== null:
-            attr[3] = splitDate(attr[3])
-          case attr[4] !== null:
-            attr[4] = splitDate(attr[4])
-          case attr[35] !== null:
-            attr[35] = splitDate(attr[35])
-          case attr[36] !== null:
-            attr[36] = splitDate(attr[36])
-          case attr[37] !== null:
-            attr[37] = splitDate(attr[37])
-          case attr[38] !== null:
-            attr[38] = splitDate(attr[38])
-          break
-        }
+    elements.forEach(element => {
+      element = replaceEmptySpace(element);
+      let td = document.createElement('td');
+      let content = document.createTextNode(element);
+      
+      let groupContainer = document.createElement('div');
+      groupContainer.classList.add("btn-group", "btn-group-sm");
+      groupContainer.role = "group";
+      groupContainer.ariaLabel = "Small button group"
+      
+      button1.innerText = "Editar";
+      button1.type = "button";
+      button1.classList.add("btn", "btn-warning")
 
-        attr.forEach(el => {
-          el = replaceEmptySpace(el);
-          let td = document.createElement('td');
-          let content = document.createTextNode(el);
-          actions.innerHTML = '<div class="btn-group btn-group-sm" role="group" aria-label="Small button group"><button type="button" class="btn btn-outline-dark">Editar</button><button type="button" class="btn btn-outline-dark">Apagar</button></div>';
-          td.appendChild(content);
-          row.appendChild(td);
-          row.appendChild(actions);
-          tbody.appendChild(row);
-        });
-
-        data.push(attr)
-      }
+      button2.innerText = "Apagar";
+      button2.type = "button";
+      button2.classList.add("btn", "btn-danger");
+      
+      groupContainer.appendChild(button1);
+      groupContainer.appendChild(button2);
+      actionCell.appendChild(groupContainer);
+      td.appendChild(content);
+      tr.appendChild(td);
+      tr.appendChild(actionCell);
+      tbody.appendChild(tr);
     });
   });
-  console.debug(data)
+  console.debug(storage);
 }
 
-/*
-* Recebe a data em forma de 'string'.
-* Separa a data a partir do espaçe em branco.
-* Pega somente a primeira parte da data e a retorna.
-*/
+function fileToStringArray(fileAsText) {
+  const lines = fileAsText.split('\n');
+
+  lines.forEach(disorganizedLines => {
+    const organizedLines = disorganizedLines.split('\r');
+
+    organizedLines.forEach((cellsNotSeparated) => {
+      const separatedCellArray = cellsNotSeparated.split(';');
+      transformRow(separatedCellArray);
+    });
+  });
+
+  renderTable(storage);
+  console.debug(fileArrayLength);
+}
+
+function renderNewItem() {
+  const table = document.getElementById('active_table');
+  const tbody = table.querySelector('tbody');
+  
+  for(let i = previusLength; i < storage.length; i++) {
+    const newRow = storage[i];
+    const tr = document.createElement('tr');
+    tr.classList.add("text-center");
+
+    newRow.forEach(element => {
+      const td = document.createElement('td');
+      const cellContent = document.createTextNode(element);
+      td.appendChild(cellContent);
+      tr.appendChild(td);
+    });
+
+    tbody.appendChild(tr);
+  }
+
+  console.info("Tamanho da tabela => " + tbody.querySelectorAll('tr').length);
+  console.info("Tamanho global => " + storage.length);
+  previusLength = storage.length;
+}
+
+function transformRow(row) {
+  // TODO: Fazer a validação do CNPJ
+  if(row.length === 41) {
+    switch(true) {
+      case row[3] !== null:
+        row[3] = splitDate(row[3])
+      case row[4] !== null:
+        row[4] = splitDate(row[4])
+      case row[35] !== null:
+        row[35] = splitDate(row[35])
+      case row[36] !== null:
+        row[36] = splitDate(row[36])
+      case row[37] !== null:
+        row[37] = splitDate(row[37])
+      case row[38] !== null:
+        row[38] = splitDate(row[38])
+      break
+    }
+    storage.push(row);
+    fileArrayLength++;
+    previusLength = storage.length;
+
+  }
+
+  return null;
+}
+
 const splitDate = (date => {
   const d = date.split(' ');
   return d[0]
 });
 
-/*
-* No lugar dos espaços vazios ou nulos vai definir como "N/D".
-*/
 const replaceEmptySpace = (item => {
   if(item === "" || item === null) {
     return "N/D"
   }
   return item
 });
+
+
+const formEl = document.getElementById("row_form");
+const inputs = formEl.querySelectorAll('input');
+const inputsArray = Array.from(inputs);
+
+function createItem() {
+  const row = [];
+
+  inputsArray.forEach(v => {
+    row.push(v.value);
+  });
+
+  storage.push(row);
+  renderNewItem();
+}
 
 /*
 * CHART
