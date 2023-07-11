@@ -178,73 +178,54 @@ function deleteItem(index) {
   console.log('DELETE: ' + index);
 }
 
-
+let option = 0;
 const select = document.getElementById('filter_option');
 select.addEventListener('change', (e) => {
   e.preventDefault();
-  doFilter(e);
+  if(Number.parseInt(e.target.value) !== 0) {
+    filterInput.disabled = false;
+  } else {
+    filterInput.disabled = true;
+    filterInput.value = "";
+  }
+  doFilter();
 });
 
-function doFilter(e) {
-  const selected = Number.parseInt(e.target.value);
+const filterInput = document.getElementById('filter_text_input');
+filterInput.addEventListener('change', (e) => {
+  e.preventDefault();
+  doFilter();
+});
+
+
+function doFilter() {
+  let backup = [...storage].sort();
+  let formFilterValue = String(filterInput.value);
+  let option = Number.parseInt(select.value);
+
   const table = document.getElementById('active_table');
   const tbody = table.querySelector('tbody');
 
-  if(typeof selected === 'number' && storage.length > 0) {
+  if(storage.length > 0) {
     switch(true) {
-      case selected === 0:
+      case option === 0:
+        indexEl = 0;
         tbody.innerHTML = '';
-        storage.forEach(i => {renderTable(i)});
+        storage.forEach(i => { i.shift(); renderTable(i); });
+        storage = backup;
+        console.log(storage);
       break
-      case selected === 1:
-        let filtered = [];
-        filtered = [...storage];
-        filtered.sort((a, b) => {
-          return a[22] - b[22];
-        }).reverse();
-        
+
+      case option === 1:
+        indexEl = 0;
         tbody.innerHTML = '';
-        filtered.forEach(i => {renderTable(i)});
-      break
-      case selected === 2:
-        let filtered1 = [];
-        filtered1 = [...storage];
-        filtered1.sort((a, b) => {
-          return a[27] - b[27];
-        }).reverse();
-        
-        tbody.innerHTML = '';
-        filtered1.forEach(i => {renderTable(i)});
-      break
-      case selected === 3:
-        let filtered2 = [];
-        filtered2 = [...storage];
-        filtered2.sort((a, b) => {
-          return a[21] - b[21];
-        }).reverse();
-        
-        tbody.innerHTML = '';
-        filtered2.forEach(i => {renderTable(i)});
-      break
-      case selected === 4:
-        let filtered3 = [];
-        filtered3 = [...storage];
-        filtered3.sort((a, b) => {
-          return a[40] - b[40];
-        });
-        
-        tbody.innerHTML = '';
-        filtered3.forEach(i => {renderTable(i)});
-      break
-      case selected === 5:
-        let filtered4 = [];
-        filtered4 = [...storage];
-        filtered4.sort((a, b) => {
-          return a[25] - b[25];
-        });
-        
-        tbody.innerHTML = '';
-        filtered4.forEach(i => {renderTable(i)});
+        storage.filter((row) => {
+          return formFilterValue !== null ? row[3] === formFilterValue : true;
+        })
+        .sort()
+        .forEach(i => { i.shift(); renderTable(i); });
+        storage = backup;
+        console.log(storage);
       break
     }
   }
