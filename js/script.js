@@ -169,8 +169,11 @@ function formatDate(row) {
 const tab = document.getElementById('active_table');
 const tbody = tab.querySelector('tbody');
 
+
+/**
+ * TODO: Implementar essas funções.
+ */
 function updateItem(index) {
-  
   console.log('UPDATE: ' + index);
 }
 
@@ -216,11 +219,64 @@ function doFilter() {
         console.log(storage);
       break
 
+      // ROW[3] === CNPJ
       case option === 1:
         indexEl = 0;
         tbody.innerHTML = '';
         storage.filter((row) => {
           return formFilterValue !== null ? row[3] === formFilterValue : true;
+        })
+        .sort()
+        .forEach(i => { i.shift(); renderTable(i); });
+        storage = backup;
+        console.log(storage);
+      break
+      
+      // ROW[12] === CD_TIPO_SEGURO
+      case option === 2:
+        indexEl = 0;
+        tbody.innerHTML = '';
+        storage.filter((row) => {
+          return formFilterValue !== null ? row[12] === formFilterValue : true;
+        })
+        .sort()
+        .forEach(i => { i.shift(); renderTable(i); });
+        storage = backup;
+        console.log(storage);
+      break
+
+      // ROW[6] === CD_INST_CRED
+      case option === 3:
+        indexEl = 0;
+        tbody.innerHTML = '';
+        storage.filter((row) => {
+          return formFilterValue !== null ? row[6] === formFilterValue : true;
+        })
+        .sort()
+        .forEach(i => { i.shift(); renderTable(i); });
+        storage = backup;
+        console.log(storage);
+      break
+
+      // ROW[8] === CD_CATEG_RECURSO
+      case option === 4:
+        indexEl = 0;
+        tbody.innerHTML = '';
+        storage.filter((row) => {
+          return formFilterValue !== null ? row[8] === formFilterValue : true;
+        })
+        .sort()
+        .forEach(i => { i.shift(); renderTable(i); });
+        storage = backup;
+        console.log(storage);
+      break
+
+      // ROW[13] === CD_EMPREENDIMENTO
+      case option === 5:
+        indexEl = 0;
+        tbody.innerHTML = '';
+        storage.filter((row) => {
+          return formFilterValue !== null ? row[13] === formFilterValue : true;
         })
         .sort()
         .forEach(i => { i.shift(); renderTable(i); });
