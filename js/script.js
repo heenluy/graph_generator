@@ -1,5 +1,4 @@
 let storage = [];
-let previusLength = 0;
 
 /**
  * PROBLEMAS
@@ -19,7 +18,8 @@ let previusLength = 0;
  * 
  * 4. Ao iserir um novo item a partir do formulário, os campos que possuem
  *    datas ficam no formato yyyy-MM-dd.
- *  (EM ABERTO)
+ *    A @function formatDate corrigiu isso.
+ * (CORRIGIDO)
  * 
 */
 
@@ -37,18 +37,23 @@ function processFile() {
   reader.readAsText(file);
 }
 
+let indexEl = 0;
 function renderTable(row) {
   const tbody = document.getElementById('table_body');
-    
+  
   const tr = document.createElement('tr');
   tr.classList.add("text-center");
 
   const actionCell = document.createElement('td');
   const button1 = document.createElement('button');
   const button2 = document.createElement('button');
+  
+  row.unshift(indexEl);
+  indexEl++;
 
-  row.forEach(element => {
+  row.forEach((element) => {
     element = replaceEmptySpace(element);
+
     let td = document.createElement('td');
     let content = document.createTextNode(element);
     
@@ -60,6 +65,7 @@ function renderTable(row) {
     button1.innerText = "Editar";
     button1.type = "button";
     button1.classList.add("btn", "btn-warning")
+
 
     button2.innerText = "Apagar";
     button2.type = "button";
@@ -73,6 +79,10 @@ function renderTable(row) {
     tr.appendChild(actionCell);
     tbody.appendChild(tr);
   });
+
+  storage.push(row);
+  button1.addEventListener('click', (e) => { updateItem(row[0]); e.preventDefault(); });
+  button2.addEventListener('click', (e) => { deleteItem(row[0]); e.preventDefault(); });
 }
 
 function fileToStringArray(fileAsText) {
@@ -80,7 +90,7 @@ function fileToStringArray(fileAsText) {
 
   lines.forEach(disorganizedLines => {
     const organizedLines = disorganizedLines.split('\r');
-
+    
     organizedLines.forEach((cellsNotSeparated) => {
       const row = cellsNotSeparated.split(';');
       // VALIDAR CNPJ_IF
@@ -100,60 +110,11 @@ function fileToStringArray(fileAsText) {
           case row[38] !== null:
             row[38] = splitDate(row[38])
         }
-        storage.push(row);
         renderTable(row);
       }
     });
   });
   console.debug(storage);
-  previusLength = storage.length;
-}
-
-function renderNewItem() {
-  const table = document.getElementById('active_table');
-  const tbody = table.querySelector('tbody');
-  
-  const actionCell = document.createElement('td');
-  const button1 = document.createElement('button');
-  const button2 = document.createElement('button');
-  
-  for(let i = previusLength; i < storage.length; i++) {
-    const newRow = storage[i];
-    const tr = document.createElement('tr');
-    tr.classList.add("text-center");
-
-    newRow.forEach(element => {
-      const td = document.createElement('td');
-      const cellContent = document.createTextNode(element);
-
-      let groupContainer = document.createElement('div');
-      groupContainer.classList.add("btn-group", "btn-group-sm");
-      groupContainer.role = "group";
-      groupContainer.ariaLabel = "Small button group"
-      
-      button1.innerText = "Editar";
-      button1.type = "button";
-      button1.classList.add("btn", "btn-warning")
-      
-      button2.innerText = "Apagar";
-      button2.type = "button";
-      button2.classList.add("btn", "btn-danger");
-      
-      groupContainer.appendChild(button1);
-      groupContainer.appendChild(button2);
-      actionCell.appendChild(groupContainer);
-
-      td.appendChild(cellContent);
-      tr.appendChild(td);
-      tr.appendChild(actionCell);
-    });
-
-    tbody.appendChild(tr);
-  }
-
-  console.info("Tamanho da tabela => " + tbody.querySelectorAll('tr').length);
-  console.info("Tamanho global => " + storage.length);
-  previusLength = storage.length;
 }
 
 const splitDate = (date => {
@@ -180,13 +141,39 @@ function createItem() {
   const row = [];
 
   for(let i = 0; i < inputList.length; i++) {
-    // Consertar o formato das datas
-    inputList[i].value = replaceEmptySpace(inputList[i].value);
     row.push(inputList[i].value);
   }
+
+  renderTable(formatDate(row));
+}
+
+function formatDate(row) {
+  const formattedRow = [];
+
+  row.forEach(element => {
+    const regex = /^\d{4}-\d{2}-\d{2}$/;
+    if(regex.test(element)) {
+      let dateArray = element.split('-');
+      let newD = `${dateArray[2]}/${dateArray[1]}/${dateArray[0]}`;
+      element = newD;
+    }
+    formattedRow.push(element);
+  });
+
+  return formattedRow;
+}
+
+// UPDATE ITEM AND DELETE ITEM
+const tab = document.getElementById('active_table');
+const tbody = tab.querySelector('tbody');
+
+function updateItem(index) {
   
-  storage.push(row);
-  renderNewItem();
+  console.log('UPDATE: ' + index);
+}
+
+function deleteItem(index) {
+  console.log('DELETE: ' + index);
 }
 
 
