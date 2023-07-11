@@ -114,6 +114,7 @@ function fileToStringArray(fileAsText) {
       }
     });
   });
+  exportButton.disabled = false; 
   console.debug(storage);
 }
 
@@ -145,6 +146,7 @@ function createItem() {
   }
 
   renderTable(formatDate(row));
+  exportButton.disabled = false;
 }
 
 function formatDate(row) {
@@ -295,11 +297,19 @@ function doFilter(e) {
  *  
  */
 
+
+const exportButton = document.getElementById('export_file_btn');
+exportButton.addEventListener('click', (e) => {
+  e.preventDefault();
+  exportFileAsXML();
+});
+
 // EXPORT
 function exportFileAsXML() {
   const xmlDocument = document.implementation.createDocument(null, 'BANESTES');
   
   storage.forEach(row => {
+    row.shift();
     const docEl = xmlDocument.createElement('OPERACAO_BASICA');
     
     const REF_BACEN = xmlDocument.createElement('REF_BACEN');
@@ -476,7 +486,7 @@ function exportFileAsXML() {
   const a = document.createElement('a');
   a.style.visibility = 'hidden';
   a.href = url;
-  a.download = 'dados__test.xml';
+  a.download = 'dados__test__y.xml';
   a.click();
 }
 
