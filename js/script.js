@@ -17,6 +17,10 @@ let previusLength = 0;
  *    a tabela atualiza mas não dispara o filtro automaticamente.
  * (EM ABERTO)
  * 
+ * 4. Ao iserir um novo item a partir do formulário, os campos que possuem
+ *    datas ficam no formato yyyy-MM-dd.
+ *  (EM ABERTO)
+ * 
 */
 
 function processFile() {
@@ -109,6 +113,10 @@ function renderNewItem() {
   const table = document.getElementById('active_table');
   const tbody = table.querySelector('tbody');
   
+  const actionCell = document.createElement('td');
+  const button1 = document.createElement('button');
+  const button2 = document.createElement('button');
+  
   for(let i = previusLength; i < storage.length; i++) {
     const newRow = storage[i];
     const tr = document.createElement('tr');
@@ -117,8 +125,27 @@ function renderNewItem() {
     newRow.forEach(element => {
       const td = document.createElement('td');
       const cellContent = document.createTextNode(element);
+
+      let groupContainer = document.createElement('div');
+      groupContainer.classList.add("btn-group", "btn-group-sm");
+      groupContainer.role = "group";
+      groupContainer.ariaLabel = "Small button group"
+      
+      button1.innerText = "Editar";
+      button1.type = "button";
+      button1.classList.add("btn", "btn-warning")
+      
+      button2.innerText = "Apagar";
+      button2.type = "button";
+      button2.classList.add("btn", "btn-danger");
+      
+      groupContainer.appendChild(button1);
+      groupContainer.appendChild(button2);
+      actionCell.appendChild(groupContainer);
+
       td.appendChild(cellContent);
       tr.appendChild(td);
+      tr.appendChild(actionCell);
     });
 
     tbody.appendChild(tr);
