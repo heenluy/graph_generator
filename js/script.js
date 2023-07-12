@@ -14,7 +14,7 @@ let storage = [];
  * 
  * 3. Ao importar um arquivo, usar um filtro e depois inserir um item na tabela,
  *    a tabela atualiza mas não dispara o filtro automaticamente.
- * (EM ABERTO)
+ * (CORRIGIDO)
  * 
  * 4. Ao iserir um novo item a partir do formulário, os campos que possuem
  *    datas ficam no formato yyyy-MM-dd.
@@ -23,7 +23,11 @@ let storage = [];
  * 
 */
 
+const ctTable = document.getElementById('ct_table');
+const ctGraph = document.getElementById('ct_graph');
+
 function processFile() {
+  ctTable.classList.remove('d-none');
   const fileInput = document.getElementById('formFile');
   const file = fileInput.files[0];
 
@@ -115,6 +119,7 @@ function fileToStringArray(fileAsText) {
     });
   });
   exportButton.disabled = false; 
+  graphButton.disabled = false;
   console.debug(storage);
 }
 
@@ -147,6 +152,7 @@ function createItem() {
 
   renderTable(formatDate(row));
   exportButton.disabled = false;
+  graphButton.disabled = false;
 }
 
 function formatDate(row) {
@@ -166,10 +172,6 @@ function formatDate(row) {
 }
 
 // UPDATE ITEM AND DELETE ITEM
-const tab = document.getElementById('active_table');
-const tbody = tab.querySelector('tbody');
-
-
 /**
  * TODO: Implementar essas funções.
  */
@@ -530,23 +532,83 @@ function exportFileAsXML() {
 /*
 * CHART
 */
-const ctx = document.getElementById("chart");
 
-new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-      datasets: [{
-        label: '# of Votes',
-        data: [12, 19, 3, 5, 2, 3],
-        borderWidth: 1
-      }]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
-        }
+const graphCanvas = document.getElementById("chart");
+const graphButton = document.getElementById('generate_graph_btn');
+graphButton.addEventListener('click', (e) => {
+  e.preventDefault();
+  generateGraph(storage);
+  ctGraph.classList.remove('d-none');
+});
+
+function generateGraph(data) {
+  new Chart(
+    graphCanvas,
+    {
+      type: 'line',
+      data: {
+        labels: data.map(row => (row[0] + 1) + 'º'),
+        datasets: [
+          {
+            label: 'Parcela Crédito',
+            data: data.map(row => row[28]),
+            fill: false,
+            borderColor: 'rgb(25, 135, 84)',
+            tension: 0.1
+          },
+          {
+            label: 'Receita Bruta Esperada',
+            data: data.map(row => row[27]),
+            fill: false,
+            borderColor: 'rgb(13, 110, 253)',
+            tension: 0.1
+          }
+        ]
       }
     }
-});
+  );
+}
+
+const labels = [
+  "REF_BACEN",
+  "NU_ORDEM",
+  "CNPJ_IF",
+  "DT_EMISSÃO",
+  "DT_VENCIMENTO",
+  "CD_INST_CREDITO",
+  "CD_CATEG_EMITENTE",
+  "CD_CATEG_RECURSO",
+  "CNPJ_AGENTE_INVEST",
+  "CD_ESTADO",
+  "CD_REF_BACEN_INVESTIMENTO",
+  "CD_TIPO_SEGURO",
+  "CD_EMPREENDIMENTO",
+  "CD_PROGRAMA",
+  "CD_TIPO_ENCARG_FINAC",
+  "CD_TIPO_IRRIGAÇÃO",
+  "CD_TIPO_AGRICULTURA",
+  "CD_FASE_CICLO_PRODUÇÃO",
+  "CD_TIPO_CULTIVO",
+  "CD_TIPO_INTEGR_CONSOR",
+  "CD_TIPO_GRÃO_SEMENTE",
+  "VL_ALIQ_PROAGRO",
+  "VL_JUROS",
+  "VL_PRESTAÇÃO_INVESTIMENTO",
+  "VL_PREV_PROD",
+  "VL_QUANTIDADE",
+  "VL_RECEITA_BRUTA_ESPERADA",
+  "VL_PARC_CRÉDITO",
+  "VL_REC_PROPRIO",
+  "VL_PERC_RISCO_STN",
+  "VL_PERC_RISCO_FUNDO_CONST",
+  "VL_REC_PROPRIO_SRV",
+  "VL_AREA_FINANC",
+  "CD_SUBPROGRAMA",
+  "VL_PRODUTIV_OBTIDA",
+  "DT_FIM_COLHEITA",
+  "DT_FIM_PLANTIO",
+  "DT_INIC_COLHEITA",
+  "DT_INIC_PLANTIO",
+  "VL_JUROS_ENC_FINAN_PROSFIX",
+  "VL_PERC_CUSTO_EFET_TOTAL"
+];
