@@ -217,125 +217,78 @@ function doFilter() {
         indexEl = 0;
         tbody.innerHTML = '';
         storage.forEach(i => { i.shift(); renderTable(i); });
+        updateGraph(storage);
         storage = backup;
-        console.log(storage);
       break
 
       // ROW[3] === CNPJ
       case option === 1:
         indexEl = 0;
         tbody.innerHTML = '';
-        storage.filter((row) => {
+        const f1 = storage.filter((row) => {
           return formFilterValue !== null ? row[3] === formFilterValue : true;
-        })
-        .sort()
-        .forEach(i => { i.shift(); renderTable(i); });
+        }).sort();
+
+        f1.forEach(i => { i.shift(); renderTable(i); });
+        updateGraph(f1);
         storage = backup;
-        console.log(storage);
       break
       
       // ROW[12] === CD_TIPO_SEGURO
       case option === 2:
         indexEl = 0;
         tbody.innerHTML = '';
-        storage.filter((row) => {
+        const f2 = storage.filter((row) => {
           return formFilterValue !== null ? row[12] === formFilterValue : true;
-        })
-        .sort()
-        .forEach(i => { i.shift(); renderTable(i); });
+        }).sort();
+
+        f2.forEach(i => { i.shift(); renderTable(i); });
+        updateGraph(f2);
         storage = backup;
-        console.log(storage);
       break
 
       // ROW[6] === CD_INST_CRED
       case option === 3:
         indexEl = 0;
         tbody.innerHTML = '';
-        storage.filter((row) => {
+        const f3 = storage.filter((row) => {
           return formFilterValue !== null ? row[6] === formFilterValue : true;
-        })
-        .sort()
-        .forEach(i => { i.shift(); renderTable(i); });
+        }).sort();
+        
+        f3.forEach(i => { i.shift(); renderTable(i); });
+        updateGraph(f3);
         storage = backup;
-        console.log(storage);
       break
 
       // ROW[8] === CD_CATEG_RECURSO
       case option === 4:
         indexEl = 0;
         tbody.innerHTML = '';
-        storage.filter((row) => {
+        const f4 = storage.filter((row) => {
           return formFilterValue !== null ? row[8] === formFilterValue : true;
-        })
-        .sort()
-        .forEach(i => { i.shift(); renderTable(i); });
+        }).sort();
+
+        f4.forEach(i => { i.shift(); renderTable(i); });
+        updateGraph(f4);
         storage = backup;
-        console.log(storage);
       break
 
       // ROW[13] === CD_EMPREENDIMENTO
       case option === 5:
         indexEl = 0;
         tbody.innerHTML = '';
-        storage.filter((row) => {
+        const f5 = storage.filter((row) => {
           return formFilterValue !== null ? row[13] === formFilterValue : true;
-        })
-        .sort()
-        .forEach(i => { i.shift(); renderTable(i); });
+        }).sort();
+
+        f5.forEach(i => { i.shift(); renderTable(i); });
+        updateGraph(f5);
         storage = backup;
-        console.log(storage);
       break
     }
   }
 
 }
-
-/**
- * 
- *  REF_BACEN
- *  NU_ORDEM
- *  CNPJ_IF
- *  DT_EMISSÃO
- *  DT_VENCIMENTO
- *  CD_INST_CREDITO
- *  CD_CATEG_EMITENTE
- *  CD_CATEG_RECURSO
- *  CNPJ_AGENTE_INVEST
- *  CD_ESTADO
- *  CD_REF_BACEN_INVESTIMENTO
- *  CD_TIPO_SEGURO
- *  CD_EMPREENDIMENTO
- *  CD_PROGRAMA
- *  CD_TIPO_ENCARG_FINAC
- *  CD_TIPO_IRRIGAÇÃO
- *  CD_TIPO_AGRICULTURA
- *  CD_FASE_CICLO_PRODUÇÃO
- *  CD_TIPO_CULTIVO
- *  CD_TIPO_INTEGR_CONSOR
- *  CD_TIPO_GRÃO_SEMENTE
- *  VL_ALIQ_PROAGRO
- *  VL_JUROS
- *  VL_PRESTAÇÃO_INVESTIMENTO
- *  VL_PREV_PROD
- *  VL_QUANTIDADE
- *  VL_RECEITA_BRUTA_ESPERADA
- *  VL_PARC_CRÉDITO
- *  VL_REC_PROPRIO
- *  VL_PERC_RISCO_STN
- *  VL_PERC_RISCO_FUNDO_CONST
- *  VL_REC_PROPRIO_SRV
- *  VL_AREA_FINANC
- *  CD_SUBPROGRAMA
- *  VL_PRODUTIV_OBTIDA
- *  DT_FIM_COLHEITA
- *  DT_FIM_PLANTIO
- *  DT_INIC_COLHEITA
- *  DT_INIC_PLANTIO
- *  VL_JUROS_ENC_FINAN_PROSFIX
- *  VL_PERC_CUSTO_EFET_TOTAL
- *  
- */
-
 
 const exportButton = document.getElementById('export_file_btn');
 exportButton.addEventListener('click', (e) => {
@@ -533,6 +486,7 @@ function exportFileAsXML() {
 * CHART
 */
 
+let currentChart = null;
 const graphCanvas = document.getElementById("chart");
 const graphButton = document.getElementById('generate_graph_btn');
 graphButton.addEventListener('click', (e) => {
@@ -542,7 +496,36 @@ graphButton.addEventListener('click', (e) => {
 });
 
 function generateGraph(data) {
-  new Chart(
+  currentChart = new Chart(
+    graphCanvas,
+    {
+      type: 'line',
+      data: {
+        labels: data.map(row => (row[0] + 1) + 'º'),
+        datasets: [
+          {
+            label: 'Parcela Crédito',
+            data: data.map(row => row[28]),
+            fill: false,
+            borderColor: 'rgb(25, 135, 84)',
+            tension: 0.1
+          },
+          {
+            label: 'Receita Bruta Esperada',
+            data: data.map(row => row[27]),
+            fill: false,
+            borderColor: 'rgb(13, 110, 253)',
+            tension: 0.1
+          }
+        ]
+      }
+    }
+  );
+}
+
+function updateGraph(data) {
+  if (currentChart) { currentChart.destroy(); }
+  currentChart = new Chart(
     graphCanvas,
     {
       type: 'line',
