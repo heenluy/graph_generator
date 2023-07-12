@@ -43,8 +43,8 @@
         <div class="row justify-content-center">
             <div class="col">
                 <div class="mb-3 w-25">
-                    <label for="formFile" class="form-label fs-5">Selecione o arquivo desejado.</label>
-                    <input class="form-control" type="file" accept=".txt, .xml" id="formFile" onchange="processFile()">
+                    <label for="formFile" class="form-label fs-5">Selecione o arquivo de texto (.txt):</label>
+                    <input class="form-control" type="file" accept=".txt" id="formFile" onchange="processFile()">
                 </div>
             </div>
         </div>
@@ -269,6 +269,190 @@
                 <div class="modal-footer">
                   <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
                   <button type="button" class="btn btn-primary" id="form_submit_btn">Inserir</button>
+                </div>
+              </div>
+            </div>
+        </div>
+
+        <!-- Modal Editar -->
+        <div class="modal fade" id="editLine" tabindex="-1" aria-labelledby="editLineLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="editLineLabel">Inserir linha na tabela</h1>
+                  <button type="button" class="btn-close bt" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body overflow-y-auto" style="max-height: 400px;">
+                  <form id="edit_row_form">
+                    <div class="mb-3">
+                      <label for="ref_bacen" class="col-form-label">REF_BACEN:</label>
+                      <input type="text" class="form-control" id="ref_bacen">
+                    </div>
+                    <div class="mb-3">
+                        <label for="nu_ordem" class="col-form-label">NU_ORDEM:</label>
+                        <input type="number" class="form-control" id="nu_ordem">
+                    </div>
+                    <div class="mb-3">
+                        <label for="cnpj_if" class="col-form-label">CNPJ_IF:</label>
+                        <input type="text" class="form-control" id="cnpj_if">
+                    </div>
+                    <div class="mb-3">
+                        <label for="dt_emissao" class="col-form-label">DT_EMISSÃO:</label>
+                        <input type="date" class="form-control" id="dt_emissao">
+                    </div>
+                    <div class="mb-3">
+                        <label for="dt_vencimento" class="col-form-label">DT_VENCIMENTO:</label>
+                        <input type="date" class="form-control" id="dt_vencimento">
+                    </div>
+                    <div class="mb-3">
+                        <label for="cd_inst_credito" class="col-form-label">CD_INST_CREDITO:</label>
+                        <input type="text" class="form-control" id="cd_inst_credito">
+                    </div>  
+                    <div class="mb-3">
+                        <label for="cd_categ_emitente" class="col-form-label">CD_CATEG_EMITENTE:</label>
+                        <input type="text" class="form-control" id="cd_categ_emitente">
+                    </div>
+                    <div class="mb-3">
+                        <label for="cd_categ_recurso" class="col-form-label">CD_CATEG_RECURSO:</label>
+                        <input type="text" class="form-control" id="cd_categ_recurso">
+                    </div>
+                    <div class="mb-3">
+                        <label for="cnpj_agente_invest" class="col-form-label">CNPJ_AGENTE_INVEST:</label>
+                        <input type="text" class="form-control" id="cnpj_agente_invest">
+                    </div>
+                    <div class="mb-3">
+                        <label for="cd_estado" class="col-form-label">CD_ESTADO:</label>
+                        <input type="text" class="form-control" id="cd_estado">
+                    </div>
+                    <div class="mb-3">
+                        <label for="cd_ref_bacen_investimento" class="col-form-label">CD_REF_BACEN_INVESTIMENTO:</label>
+                        <input type="text" class="form-control" id="cd_ref_bacen_investimento">
+                    </div>
+                    <div class="mb-3">
+                        <label for="cd_tipo_seguro" class="col-form-label">CD_TIPO_SEGURO:</label>
+                        <input type="text" class="form-control" id="cd_tipo_seguro">
+                    </div>
+                    <div class="mb-3">
+                        <label for="cd_empreendimento" class="col-form-label">CD_EMPREENDIMENTO:</label>
+                        <input type="text" class="form-control" id="cd_empreendimento">
+                    </div>
+                    <div class="mb-3">
+                        <label for="cd_programa" class="col-form-label">CD_PROGRAMA:</label>
+                        <input type="text" class="form-control" id="cd_programa">
+                    </div>
+                    <div class="mb-3">
+                        <label for="cd_tipo_encarg_finac" class="col-form-label">CD_TIPO_ENCARG_FINAC:</label>
+                        <input type="text" class="form-control" id="cd_tipo_encarg_finac">
+                    </div>
+                    <div class="mb-3">
+                        <label for="cd_tipo_irrigacao" class="col-form-label">CD_TIPO_IRRIGAÇÃO:</label>
+                        <input type="text" class="form-control" id="cd_tipo_irrigacao">
+                    </div>
+                    <div class="mb-3">
+                        <label for="cd_tipo_agricultura" class="col-form-label">CD_TIPO_AGRICULTURA:</label>
+                        <input type="text" class="form-control" id="cd_tipo_agricultura">
+                    </div>
+                    <div class="mb-3">
+                        <label for="cd_fase_ciclo_producao" class="col-form-label">CD_FASE_CICLO_PRODUÇÃO:</label>
+                        <input type="text" class="form-control" id="cd_fase_ciclo_producao">
+                    </div>
+                    <div class="mb-3">
+                        <label for="cd_tipo_cultivo" class="col-form-label">CD_TIPO_CULTIVO:</label>
+                        <input type="text" class="form-control" id="cd_tipo_cultivo">
+                    </div>
+                    <div class="mb-3">
+                        <label for="cd_tipo_integr_consor" class="col-form-label">CD_TIPO_INTEGR_CONSOR:</label>
+                        <input type="text" class="form-control" id="cd_tipo_integr_consor">
+                    </div>
+                    <div class="mb-3">
+                        <label for="cd_tipo_grao_semente" class="col-form-label">CD_TIPO_GRÃO_SEMENTE:</label>
+                        <input type="text" class="form-control" id="cd_tipo_grao_semente">
+                    </div>
+                    <div class="mb-3">
+                        <label for="vl_aliq_proagro" class="col-form-label">VL_ALIQ_PROAGRO:</label>
+                        <input type="number" class="form-control" id="vl_aliq_proagro">
+                    </div>
+                    <div class="mb-3">
+                        <label for="vl_juros" class="col-form-label">VL_JUROS:</label>
+                        <input type="number" class="form-control" id="vl_juros">
+                    </div>
+                    <div class="mb-3">
+                        <label for="vl_prestacao_invest" class="col-form-label">VL_PRESTAÇÃO_INVESTIMENTO:</label>
+                        <input type="number" class="form-control" id="vl_prestacao_invest">
+                    </div>
+                    <div class="mb-3">
+                        <label for="vl_prev_prod" class="col-form-label">VL_PREV_PROD:</label>
+                        <input type="number" class="form-control" id="vl_prev_prod">
+                    </div>
+                    <div class="mb-3">
+                        <label for="vl_quantidade" class="col-form-label">VL_QUANTIDADE:</label>
+                        <input type="number" class="form-control" id="vl_quantidade">
+                    </div>
+                    <div class="mb-3">
+                        <label for="vl_receita_bruta_esperada" class="col-form-label">VL_RECEITA_BRUTA_ESPERADA:</label>
+                        <input type="number" class="form-control" id="vl_receita_bruta_esperada">
+                    </div>
+                    <div class="mb-3">
+                        <label for="vl_parc_credito" class="col-form-label">VL_PARC_CRÉDITO:</label>
+                        <input type="number" class="form-control" id="vl_parc_credito">
+                    </div>
+                    <div class="mb-3">
+                        <label for="vl_rec_proprio" class="col-form-label">VL_REC_PROPRIO:</label>
+                        <input type="number" class="form-control" id="vl_rec_proprio">
+                    </div>
+                    <div class="mb-3">
+                        <label for="vl_perc_risco_stn" class="col-form-label">VL_PERC_RISCO_STN:</label>
+                        <input type="number" class="form-control" id="vl_perc_risco_stn">
+                    </div>
+                    <div class="mb-3">
+                        <label for="vl_perc_risco_fundo_const" class="col-form-label">VL_PERC_RISCO_FUNDO_CONST:</label>
+                        <input type="number" class="form-control" id="vl_perc_risco_fundo_const">
+                    </div>
+                    <div class="mb-3">
+                        <label for="vl_rec_proprio_srv" class="col-form-label">VL_REC_PROPRIO_SRV:</label>
+                        <input type="number" class="form-control" id="vl_rec_proprio_srv">
+                    </div>
+                    <div class="mb-3">
+                        <label for="vl_area_financ" class="col-form-label">VL_AREA_FINANC:</label>
+                        <input type="number" class="form-control" id="vl_area_financ">
+                    </div>
+                    <div class="mb-3">
+                        <label for="cd_subprograma" class="col-form-label">CD_SUBPROGRAMA:</label>
+                        <input type="text" class="form-control" id="cd_subprograma">
+                    </div>
+                    <div class="mb-3">
+                        <label for="vl_produtiv_obtida" class="col-form-label">VL_PRODUTIV_OBTIDA:</label>
+                        <input type="number" class="form-control" id="vl_produtiv_obtida">
+                    </div>
+                    <div class="mb-3">
+                        <label for="dt_fim_colheita" class="col-form-label">DT_FIM_COLHEITA:</label>
+                        <input type="date" class="form-control" id="dt_fim_colheita">
+                    </div>
+                    <div class="mb-3">
+                        <label for="dt_fim_plantio" class="col-form-label">DT_FIM_PLANTIO:</label>
+                        <input type="date" class="form-control" id="dt_fim_plantio">
+                    </div>
+                    <div class="mb-3">
+                        <label for="data_inic_colheita" class="col-form-label">DT_INIC_COLHEITA:</label>
+                        <input type="date" class="form-control" id="data_inic_colheita">
+                    </div>
+                    <div class="mb-3">
+                        <label for="data_inic_plantio" class="col-form-label">DT_INIC_PLANTIO:</label>
+                        <input type="date" class="form-control" id="data_inic_plantio">
+                    </div>
+                    <div class="mb-3">
+                        <label for="vl_juros_enc" class="col-form-label">VL_JUROS_ENC_FINAN_PROSFIX:</label>
+                        <input type="number" class="form-control" id="vl_juros_enc">
+                    </div>
+                    <div class="mb-3">
+                        <label for="vl_perc_custo" class="col-form-label">VL_PERC_CUSTO_EFET_TOTAL:</label>
+                        <input type="number" class="form-control" id="vl_perc_custo">
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                  <button type="button" class="btn btn-primary" id="edit_item_btn">Atualizar</button>
                 </div>
               </div>
             </div>

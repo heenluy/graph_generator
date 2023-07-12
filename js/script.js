@@ -68,6 +68,8 @@ function renderTable(row) {
     
     button1.innerText = "Editar";
     button1.type = "button";
+    button1.setAttribute('data-bs-toggle', 'modal');
+    button1.setAttribute('data-bs-target', '#editLine');
     button1.classList.add("btn", "btn-warning")
 
 
@@ -85,7 +87,7 @@ function renderTable(row) {
   });
 
   storage.push(row);
-  button1.addEventListener('click', (e) => { updateItem(row[0]); e.preventDefault(); });
+  button1.addEventListener('click', (e) => { loadRowInEditForm(row[0]); e.preventDefault(); });
   button2.addEventListener('click', (e) => { deleteItem(row[0]); e.preventDefault(); });
 }
 
@@ -120,12 +122,12 @@ function fileToStringArray(fileAsText) {
   });
   exportButton.disabled = false; 
   graphButton.disabled = false;
-  console.debug(storage);
+  console.debug('DADOS IMPORTADAS: ', storage.length);
 }
 
 const splitDate = (date => {
   const d = date.split(' ');
-  return d[0]
+  return refactorDateFromFile(d[0]);
 });
 
 const replaceEmptySpace = (item => {
@@ -136,12 +138,18 @@ const replaceEmptySpace = (item => {
 });
 
 
-const formEl = document.getElementById("row_form");
-const submit = document.getElementById("form_submit_btn");
-submit.addEventListener('click', (e) => { e.preventDefault(); createItem();});
+const formEl1 = document.getElementById("row_form");
+const submitEl1 = document.getElementById("form_submit_btn");
+submitEl1.addEventListener('click', (e) => { e.preventDefault(); createItem();});
 
-const inputs = formEl.querySelectorAll('input');
+const formEl2 = document.getElementById("edit_row_form");
+const submitEl2 = document.getElementById("edit_item_btn");
+
+const inputs = formEl1.querySelectorAll('input');
 const inputList = Array.from(inputs);
+
+const editInputs = formEl2.querySelectorAll('input');
+const editInputList = Array.from(editInputs);
 
 function createItem() {
   const row = [];
@@ -153,6 +161,7 @@ function createItem() {
   renderTable(formatDate(row));
   exportButton.disabled = false;
   graphButton.disabled = false;
+  generateGraph(storage);
 }
 
 function formatDate(row) {
@@ -171,16 +180,57 @@ function formatDate(row) {
   return formattedRow;
 }
 
-// UPDATE ITEM AND DELETE ITEM
-/**
- * TODO: Implementar essas funções.
- */
-function updateItem(index) {
-  console.log('UPDATE: ' + index);
+const ISODateFormat = ((date) => {
+  const regex = /^(0[1-9]|1[0-9]|2[0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
+  if (regex.test(date)) {
+    let n = date.split('/');
+    date = `${n[2]}-${n[1]}-${n[0]}`
+  }
+  return date;
+});
+
+const refactorDateFromFile = ((date) => {
+  const regex = /^(0[1-9]|1[0-2])\/(0[1-9]|1[0-9]|2[0-9]|3[01])\/\d{4}$/;
+  if (regex.test(date)) {
+    let n = date.split('/');
+    date = `${n[1]}/${n[0]}/${n[2]}`
+  }
+  return date;
+});
+
+function loadRowInEditForm(index) {
+  const row = storage[index];
+  row[4] = ISODateFormat(row[4]);
+  row[5] = ISODateFormat(row[5]);
+  row[35] = ISODateFormat(row[35]);
+  row[36] = ISODateFormat(row[36]);
+  row[37] = ISODateFormat(row[37]);
+  row[38] = ISODateFormat(row[38]);
+
+  for (let i = 0; i < editInputList.length; i++) {
+    editInputList[i].value = row[i + 1];
+  }
+
+  submitEl2.addEventListener('click', (e) => {
+    e.preventDefault();    
+    for (let i = 0; i < editInputList.length; i++) {
+      row[i + 1] = editInputList[i].value;
+    }
+    storage[index] = formatDate(row);
+    doFilter();
+    console.log('TAMANHOS DOS INPUTS: ', editInputList.length);
+    console.log('TAMANHOS DAS CÉLULAS: ', row.length);
+    console.log('TAMANHOS DOS DADOS APÓS EDIÇÃO: ', storage.length);
+    console.log('CÉLULAS: ', row);
+  });
 }
 
 function deleteItem(index) {
-  console.log('DELETE: ' + index);
+  storage.splice(index, 1);
+  console.log('DADOS APÓS REMOÇÃO: ', storage.length);
+  select.value = '0';
+  doFilter();
+  console.log('ÍNDICE DA LINHA APAGADA: ', index);
 }
 
 let option = 0;
@@ -216,8 +266,9 @@ function doFilter() {
       case option === 0:
         indexEl = 0;
         tbody.innerHTML = '';
-        storage.forEach(i => { i.shift(); renderTable(i); });
-        updateGraph(storage);
+        const f = [...storage];
+        f.forEach(i => { i.shift(); renderTable(i); });
+        generateGraph(f);
         storage = backup;
       break
 
@@ -230,7 +281,7 @@ function doFilter() {
         }).sort();
 
         f1.forEach(i => { i.shift(); renderTable(i); });
-        updateGraph(f1);
+        generateGraph(f1);
         storage = backup;
       break
       
@@ -243,7 +294,7 @@ function doFilter() {
         }).sort();
 
         f2.forEach(i => { i.shift(); renderTable(i); });
-        updateGraph(f2);
+        generateGraph(f2);
         storage = backup;
       break
 
@@ -256,7 +307,7 @@ function doFilter() {
         }).sort();
         
         f3.forEach(i => { i.shift(); renderTable(i); });
-        updateGraph(f3);
+        generateGraph(f3);
         storage = backup;
       break
 
@@ -269,7 +320,7 @@ function doFilter() {
         }).sort();
 
         f4.forEach(i => { i.shift(); renderTable(i); });
-        updateGraph(f4);
+        generateGraph(f4);
         storage = backup;
       break
 
@@ -282,7 +333,7 @@ function doFilter() {
         }).sort();
 
         f5.forEach(i => { i.shift(); renderTable(i); });
-        updateGraph(f5);
+        generateGraph(f5);
         storage = backup;
       break
     }
@@ -478,7 +529,7 @@ function exportFileAsXML() {
   const a = document.createElement('a');
   a.style.visibility = 'hidden';
   a.href = url;
-  a.download = 'dados__test__y.xml';
+  a.download = 'OPERAÇÃO_BÁSICA_BANESTES.xml';
   a.click();
 }
 
@@ -491,39 +542,11 @@ const graphCanvas = document.getElementById("chart");
 const graphButton = document.getElementById('generate_graph_btn');
 graphButton.addEventListener('click', (e) => {
   e.preventDefault();
-  generateGraph(storage);
+  doFilter();
   ctGraph.classList.remove('d-none');
 });
 
 function generateGraph(data) {
-  currentChart = new Chart(
-    graphCanvas,
-    {
-      type: 'line',
-      data: {
-        labels: data.map(row => (row[0] + 1) + 'º'),
-        datasets: [
-          {
-            label: 'Parcela Crédito',
-            data: data.map(row => row[28]),
-            fill: false,
-            borderColor: 'rgb(25, 135, 84)',
-            tension: 0.1
-          },
-          {
-            label: 'Receita Bruta Esperada',
-            data: data.map(row => row[27]),
-            fill: false,
-            borderColor: 'rgb(13, 110, 253)',
-            tension: 0.1
-          }
-        ]
-      }
-    }
-  );
-}
-
-function updateGraph(data) {
   if (currentChart) { currentChart.destroy(); }
   currentChart = new Chart(
     graphCanvas,
